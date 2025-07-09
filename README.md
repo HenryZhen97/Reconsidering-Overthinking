@@ -6,7 +6,7 @@
 
 ## Overview
 
-we revisit overthinking by decomposing it into two distinct forms of redundancy: **internal redundancy**, which originates within FCS, and **external redundancy**, which emerges after the FCS has been reached. To address both forms of redundancy, we propose a dual-penalty mechanism tailored to their characteristics in reinforcement learning framework. For internal redundancy, we introduce a sliding-window semantic similarity strategy that detects and penalizes semantically repetitive spans, encouraging more informative and concise reasoning. For external redundancy, we quantify its severity by measuring its proportional length relative to the entire reasoning trace and apply an equivalent penalty. 
+We revisit overthinking by decomposing it into two distinct forms of redundancy: **internal redundancy**, which originates within FCS, and **external redundancy**, which emerges after the FCS has been reached. To address both forms of redundancy, we propose a dual-penalty mechanism tailored to their characteristics in reinforcement learning framework. For internal redundancy, we introduce a sliding-window semantic similarity strategy that detects and penalizes semantically repetitive spans, encouraging more informative and concise reasoning. For external redundancy, we quantify its severity by measuring its proportional length relative to the entire reasoning trace and apply an equivalent penalty. 
 
 
 ## Getting Started 🎯
