@@ -13,29 +13,25 @@ We revisit overthinking by decomposing it into two distinct forms of redundancy:
 ### Installation
 ```bash
 # Installing Python 3.10 Environment.
-conda create -n rllm python=3.10 -y
-conda activate rllm
+conda create -n overthink python=3.10 -y
+conda activate overthink
 
-# Installing RLLM dependencies.
-cd rllm
+# Installing dependencies.
+cd Recosidering-Overthinking
 pip install -e ./verl
 pip install -e .
 ```
 
 ### Data
-Our raw training data is in `rllm/data/[train|test]/[code|math]/`, along with preprocessing scripts in `rllm/data/preprocess`. To convert the raw data into Parquet files for training, run:
-
+To convert the raw data into Parquet files for training, run:
 ```bash
-# Download datasets from GDrive, populates rllm/data/[train|test]/[math|code]/*.json
-python scripts/data/download_datasets.py
-
 # Generate parquet files
 python scripts/data/deepscaler_dataset.py
 ```
 
 ### Training Scripts
 
-We provide training scripts in the `scripts/deepscaler/train/`. To fully reproduce our CoT Compress results, please refer to the corresponding `README.md` files in `verl`.
+We provide training scripts in the `scripts/deepscaler/train/`. To fully reproduce our CoT Compress results, please refer to the corresponding `README.md` files in each directory.
 
 ## Evaluation ⚖️
 
