@@ -114,7 +114,7 @@ def compress_compute_score(sample: RewardSample, train_config, reward_config, to
     cot_slices = split_sentences(cot)
     gain = get_reasoning_gain(cot_slices, server_url)
 
-    if train_config.rollout.use_reasoning_gain:
+    if train_config.rollout.use_internal_redundancy:
         gain_score = cal_reasoning_gain_penalty(gain, raw_acc_score)
         acc_score = 0.5 * (gain_score + redundancy_score) if train_config.rollout.use_external_redundancy else gain_score
     
