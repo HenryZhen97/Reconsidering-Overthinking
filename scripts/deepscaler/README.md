@@ -22,11 +22,14 @@ ray start --address=[RAY_ADDRESS]
 3. On each worker node, run embedding service:
 ```bash
 # Start embedding service
-./rllm/rewards/compress_utils/start_app.sh [WORKER_ID]
+cd ./rllm/rewards/compress_utils
+bash ./rllm/rewards/compress_utils/start_app.sh [WORKER_ID]
 ```
 
 4. Finally, on the head node, run the training script:
 ```bash
-# Run 16K or 24K context length training
-./scripts/train/deepscaler_[1.5b|7b]_compress.sh
+# If you are using wandb or swanlab, please login first
+# Run 1.5b or 7b model training
+cd ./scripts/deepscaler/train
+bash ./deepscaler_[1.5b|7b]_compress.sh
 ```
