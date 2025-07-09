@@ -465,7 +465,7 @@ class RayPPOTrainer(object):
             data_source = data_sources[i]
             if data_source not in data_source_reward:
                 data_source_reward[data_source] = []
-                external_redundancy[data_source] = []
+                external_redundancy_dict[data_source] = []
                 internal_redundancy_dict[data_source] = []
             data_source_reward[data_source].append(reward_tensor[i].item())
             external_redundancy_dict[data_source].append(external_redundancy[i])
@@ -651,8 +651,8 @@ class RayPPOTrainer(object):
                             batch.batch['token_level_scores'] = reward_tensor
                         else:
                             reward_tensor = batch.batch['token_level_scores']
-                            metrics['compress/redundancy'] = batch.meta_info['redundancy']
-                            metrics['compress/gain'] = batch.meta_info['gain']
+                            metrics['compress/external_redundancy'] = batch.meta_info['external_redundancy']
+                            metrics['compress/internal_redundancy'] = batch.meta_info['internal_redundancy']
 
                         # Rejection sampling based on rewards
                         # Group rewards by uid
