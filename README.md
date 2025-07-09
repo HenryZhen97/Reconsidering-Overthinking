@@ -35,7 +35,7 @@ python scripts/data/deepscaler_dataset.py
 
 ### Training Scripts
 
-We provide training scripts in the `scripts/deepscaler/train/`. To fully reproduce our CoT Compress results, please refer to the corresponding `README.md` files in each directory.
+We provide training scripts in the `scripts/deepscaler/train/`. To fully reproduce our CoT Compress results, please refer to the corresponding `README.md` files in `verl`.
 
 ## Evaluation ⚖️
 
