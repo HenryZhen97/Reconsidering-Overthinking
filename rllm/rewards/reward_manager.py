@@ -34,7 +34,7 @@ class VeRLRewardManager():
         self.reward_config = RewardConfig()
 
     def __call__(self, data: DataProto):
-        """VeRL trainer中reward_fn接口，VeRL DataProto类型"""
+
         prompt_ids = data.batch["prompts"]
         response_ids = data.batch["responses"]
         problem = data.non_tensor_batch["problem"]
@@ -53,7 +53,7 @@ class VeRLRewardManager():
             "external_redundancy": [],
             "internal_redundancy": [],
         }
-        # 控制一次性喂给Pool的数量，减少数据量的内存占用，避免OOM
+
         for i in range(0, len(response_str), 1024):
             problem_batch = problem[i:i+1024]
             response_str_batch = response_str[i:i+1024]

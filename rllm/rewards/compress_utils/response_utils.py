@@ -6,9 +6,7 @@ from collections import Counter, defaultdict
 
             
 def has_repetitions(text, window_size=40, min_repeats=30):
-    """
-    检测字符串中是否存在重复出现的子串。
-    """
+
     substr_counter = Counter()
     text = re.sub(r'\s+', ' ', text)
     substr_positions = defaultdict(list)
@@ -22,7 +20,6 @@ def has_repetitions(text, window_size=40, min_repeats=30):
         substr_counter[substr] += 1
         substr_positions[substr].append(i)
 
-    # 找到出现次数最大的substr
     most_common = substr_counter.most_common(1)
     if not most_common:
         return False
@@ -61,7 +58,7 @@ def split_cot(problem, cot, answer):
 
 
 def split_sentences(text: str) -> List[str]:
-    # 1. 提取 LaTeX block，用占位符替换
+
     latex_pattern = (
         r'(\$\$.*?\$\$|'            # $$...$$
         r'\$(?!\s)[^$]*?\$|'        # $...$
@@ -78,14 +75,14 @@ def split_sentences(text: str) -> List[str]:
 
     text_with_placeholders = re.sub(latex_pattern, replace_latex, text, flags=re.DOTALL)
 
-    # 2. 标记英文句尾断点（. ! ?），但避免误切小数点
+
     def insert_split_marker(text):
         result = []
         i = 0
         while i < len(text):
             ch = text[i]
             if ch in ".!?":
-                # 避免小数点切分
+
                 if ch == '.' and i > 0 and i < len(text) - 1 and text[i - 1].isdigit() and text[i + 1].isdigit():
                     result.append(ch)
                 else:
@@ -98,10 +95,10 @@ def split_sentences(text: str) -> List[str]:
 
     marked_text = insert_split_marker(text_with_placeholders)
 
-    # 3. 按标记切分句子
+
     raw_chunks = [chunk.strip() for chunk in marked_text.split("__SPLIT__") if chunk.strip()]
 
-    # 4. 恢复 LaTeX 块
+
     results = []
     for chunk in raw_chunks:
         for idx, latex in enumerate(latex_blocks):
@@ -112,7 +109,7 @@ def split_sentences(text: str) -> List[str]:
 
 
 def cosine_similarity(a, b):
-    """cosine 相似度函数"""
+
     a, b = np.array(a), np.array(b)
     a = a / np.linalg.norm(a)
     b = b / np.linalg.norm(b)
@@ -143,7 +140,7 @@ def get_reasoning_gain(response_slices, server_url="http://localhost:8000/embedd
         progress_x = []
         for i in range(0, len(sentences) - window_size + 1, stride):
             chunk_text = " ".join(sentences[i:i + window_size])
-            progress = (i + window_size / 2) / len(sentences)  # 推理进度中心点
+            progress = (i + window_size / 2) / len(sentences)
             chunks.append(chunk_text)
             progress_x.append(progress)
         return chunks, progress_x
@@ -155,7 +152,7 @@ def get_reasoning_gain(response_slices, server_url="http://localhost:8000/embedd
         emb = get_embedding_from_server(chunk_text, server_url)
         chunk_embeddings.append(emb)
 
-    # 检测冗余窗口
+
     redundant_spans = []
     adjacent_similarities = []
     for i in range(len(chunk_embeddings) - 1):
@@ -164,7 +161,7 @@ def get_reasoning_gain(response_slices, server_url="http://localhost:8000/embedd
             redundant_spans.append((i, i + 1))
         adjacent_similarities.append(sim)
 
-    # 合并连续冗余窗口段
+
     merged_segments = []
     if redundant_spans:
         current_start = redundant_spans[0][0]
@@ -178,7 +175,7 @@ def get_reasoning_gain(response_slices, server_url="http://localhost:8000/embedd
                 current_start, current_end = i, j
         merged_segments.append((current_start, current_end))
 
-    # 映射回原始句子并去除重叠
+
     merged_results = []
     for seg_start, seg_end in merged_segments:
         covered_sentences = []

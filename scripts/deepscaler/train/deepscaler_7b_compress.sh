@@ -46,16 +46,16 @@ VAL_LENGTH=16384
 if [[ "$MODEL_PATH" == *huggingface* ]]; then
     MODEL_NAME=$(basename "$MODEL_PATH")
 elif [[ "$MODEL_PATH" == *compress_rl* ]]; then
-    # 提取 global_step 数字
+
     STEP=$(basename "$MODEL_PATH" | grep -oP 'global_step_\K[0-9]+')
     
-    # 找到包含 truncate 的路径段（不包括 /actor）
+
     TRUNC_PART=$(echo "$MODEL_PATH" | grep -oP 'compress_rl-[^/]*' | grep -oP 'truncate.*')
 
-    # 拼接
+
     MODEL_NAME="${TRUNC_PART}_step_${STEP}"
 else
-    # 默认行为
+
     echo "❌ Unsupported MODEL_PATH: $MODEL_PATH"
     exit 1
 fi

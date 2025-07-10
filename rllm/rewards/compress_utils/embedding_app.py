@@ -16,7 +16,6 @@ def parse_args():
     parser.add_argument("--ip", type=str, help="ip to run the server on")
     return parser.parse_args()
 
-# 初始化模型（每个实例只加载到指定GPU）
 device = "cuda:0"
 model = SentenceTransformer(
     'sentence-transformers/all-MiniLM-L6-v2',
@@ -34,5 +33,5 @@ if __name__ == "__main__":
         app, 
         host=args.ip, 
         port=args.port,
-        workers=1,  # 每个GPU实例只运行一个worker
+        workers=1,
     )

@@ -13,20 +13,20 @@ SCORE_URL = ""
 
 
 class RewardSample(BaseModel):
-    problem: str = Field(default="", description="问题")
-    data_source: str = Field(default="", description="数据来源")
-    response_str: str = Field(default="", description="模型回答")
+    problem: str = Field(default="", description="Problem")
+    data_source: str = Field(default="", description="Data source")
+    response_str: str = Field(default="", description="Response")
     ground_truth: str = Field(default="", description="正确答案")
-    extra_info: Optional[Any] = Field(default=None, description="额外信息")
+    extra_info: Optional[Any] = Field(default=None, description="Extra information")
 
 
 def get_rank_mapping(num_apis=8):
     rank = int(os.environ.get("RANK", 0))
     world_size = int(os.environ.get("WORLD_SIZE", 1))
 
-    # 映射到编号 [0, num_groups-1]
+
     mapped_index = rank % num_apis
-    mapped_index = min(mapped_index, num_apis - 1)  # 防止越界（例如 world_size 不是 8 的整数倍）
+    mapped_index = min(mapped_index, num_apis - 1)
 
     return mapped_index
 
@@ -50,7 +50,7 @@ def compress_val(sample: RewardSample, train_config, reward_config, tokenizer) -
         redundancy = 0.0
         gain = 0.0
     else:
-        # 测试集没有像训练集一样筛选过有效数字答案和答案在problem中出现，所以需要排除这些数据统计后冗余
+
         if not llm_answer or not valid_number(str(llm_answer)) or llm_answer in problem:
             redundancy = 0.0
         else:
@@ -60,7 +60,7 @@ def compress_val(sample: RewardSample, train_config, reward_config, tokenizer) -
                 cot = fcs
             else:
                 redundancy = 0.0
-        # reasoning gain reward
+
         mapping = get_rank_mapping()
         server_url = f"http://localhost:800{mapping}/embedding"
         cot_slices = split_sentences(cot)
@@ -164,10 +164,10 @@ def cal_attempt_redundancy_penalty(cot, pre, score):
     
 def penalty_exponential(x: float, base=2.0, min_reward=0.0, max_reward=1.0) -> float:
     assert 0 <= x <= 1
-    reward = base ** (-x)  # x 越小，reward 越大
+    reward = base ** (-x)
     max_r = base ** 0
     min_r = base ** -1
-    # 归一化到[min_reward, max_reward]
+
     return min_reward + (reward - min_r) / (max_r - min_r) * (max_reward - min_reward)
 
 
@@ -175,22 +175,22 @@ def penalty_exponential_2(x: float, base=0.9, min_reward=0.0, max_reward=1.0, ce
     assert 0 <= x <= 1, "x must be in [0, 1]"
     assert 0 < center < 1, "center must be in (0, 1)"
     
-    # 非线性映射：控制曲线在 x=center 附近的形状
+
     if x < center:
-        # 在 [0, center] 区间，t 增长缓慢，曲线平缓
+
         t = (x / center) ** 2 * center
     else:
-        # 在 [center, 1] 区间，t 增长较快，曲线陡峭
+
         t = center + ((x - center) / (1 - center)) ** base * (1 - center)
     
-    # 计算原始奖励
+
     reward = base ** (-t)
     
-    # 计算归一化边界
-    max_r = base ** 0  # t=0 时（x=0）
-    min_r = base ** (-1)  # t=1 时（x=1）
+
+    max_r = base ** 0
+    min_r = base ** (-1)
     
-    # 归一化到 [min_reward, max_reward]
+
     return min_reward + (reward - min_r) / (max_r - min_r) * (max_reward - min_reward)
 
 
@@ -205,11 +205,7 @@ def penalty_sigmoid(x: float, k=20.0, center=0.3) -> float:
 
 
 def cal_verify_redundancy_penalty(redundancy, score):
-    """
-    期待的曲线是这样的：
-    1. 一般的后冗余占比在50%左右，所以希望50%以上的占比奖励基本都靠近0
-    2. 在0%-50%之间，希望越靠近0%奖励越明显，促进模型降低冗余比例
-    """
+
     # aft_pct smaller is better
     score *= penalty_exponential_2(redundancy)
 
@@ -217,10 +213,6 @@ def cal_verify_redundancy_penalty(redundancy, score):
 
 
 def cal_reasoning_gain_penalty(reasoning_gain, score):
-    """
-    期待的曲线：
-    1. 一般的reasoning gain在0.15左右，期待的cot能达到0.4左右，所以希望0.15以下的基本奖励都是0
-    2. 0.15到0.4之间的，希望越靠近0.4，奖励越明显
-    """
+
     return penalty_sigmoid(reasoning_gain) * score 
     
