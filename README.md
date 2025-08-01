@@ -40,5 +40,4 @@ Our evaluation scripts automatically runs many replicas of vLLM. To run our eval
 ./scripts/eval/eval_model.sh
 ```
 
-## Citation
 
