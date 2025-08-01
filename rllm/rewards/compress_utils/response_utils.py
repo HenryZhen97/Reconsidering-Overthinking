@@ -128,7 +128,7 @@ def get_embedding_from_server(text: str, server_url):
         return None
 
 
-def get_reasoning_gain(response_slices, server_url="http://localhost:8000/embedding", window_ratio=0.1, stride_ratio=0.05):
+def get_internal_redundancy_degree(response_slices, server_url="http://localhost:8000/embedding", window_ratio=0.1, stride_ratio=0.05):
     if len(response_slices) == 1:
         return 0.0
     num_sentences = len(response_slices)
@@ -201,4 +201,4 @@ def get_reasoning_gain(response_slices, server_url="http://localhost:8000/embedd
     if not adjacent_similarities:
         return 0.0
 
-    return 1 - np.array(adjacent_similarities).mean()
+    return np.array(adjacent_similarities).mean()
