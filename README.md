@@ -17,7 +17,7 @@ conda create -n overthink python=3.10 -y
 conda activate overthink
 
 # Installing dependencies.
-cd Recosidering-Overthinking
+cd Reconsidering-Overthinking
 pip install -e ./verl
 pip install -e .
 ```
