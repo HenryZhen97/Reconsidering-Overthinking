@@ -1,6 +1,6 @@
 <div align="center">
   
-# Recosidering Overthinking: Penalizing Internal and External Redundancy in CoT Reasoning
+# Reconsidering Overthinking: Penalizing Internal and External Redundancy in CoT Reasoning
 
 </div>
 
