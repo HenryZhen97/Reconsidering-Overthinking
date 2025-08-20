@@ -1,5 +1,5 @@
 <div align="center">
-  
+
 # Reconsidering Overthinking: Penalizing Internal and External Redundancy in CoT Reasoning
 
 </div>
@@ -15,6 +15,11 @@ We revisit overthinking by decomposing it into two distinct forms of redundancy:
 # Installing Python 3.10 Environment.
 conda create -n overthink python=3.10 -y
 conda activate overthink
+
+# Installing pyairports for vllm==0.6.3
+git clone https://github.com/ozeliger/pyairports.git
+cd pyairports
+pip install -e .
 
 # Installing dependencies.
 cd Reconsidering-Overthinking
@@ -39,5 +44,4 @@ Our evaluation scripts automatically runs many replicas of vLLM. To run our eval
 ```bash
 ./scripts/eval/eval_model.sh
 ```
-
 
