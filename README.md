@@ -15,7 +15,11 @@ This repository contains the official implementation of **Reconsidering Overthin
 
 Instead of treating all tokens as equally compressible, the method separates reasoning progress from termination behavior. This makes CoT compression more faithful than a single global length penalty.
 
-## Method Overview
+![](fig/Fig1.png)
+
+## Method
+
+![](fig/Fig2.png)
 
 Given a generated reasoning trace, we locate the first sentence that contains the correct final answer:
 
